@@ -1,0 +1,9 @@
+FROM alpine:3.6
+RUN apk update
+RUN apk add subversion gcc  g++ flex make libc-dev mpfr-dev gmp-dev mpc1-dev
+WORKDIR /src
+RUN svn co svn://gcc.gnu.org/svn/gcc/branches/gccgo
+WORKDIR /build
+RUN ../src/gccgo/configure --enable-languages=c,c++,go --disable-multilib --prefix=/usr/local
+RUN make -j 4
+RUN make install
